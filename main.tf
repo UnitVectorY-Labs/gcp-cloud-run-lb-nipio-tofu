@@ -2,8 +2,18 @@ provider "google" {
   project = var.project_id
 }
 
+data "google_project" "project" {
+  project_id = var.project_id
+}
+
 locals {
   load_balancer_domain = "${var.app_name}-${replace(google_compute_global_address.load_balancer_ip.address, ".", "-")}.nip.io"
+}
+
+resource "google_iap_client" "project_client" {
+  count        = var.iap_enabled ? 1 : 0
+  display_name = var.app_name
+  brand        = "projects/${data.google_project.project.number}/brands/${data.google_project.project.number}"
 }
 
 resource "google_compute_global_address" "load_balancer_ip" {
@@ -55,13 +65,35 @@ resource "google_cloud_run_v2_service" "services" {
   ]
 }
 
-resource "google_cloud_run_service_iam_member" "noauth" {
-  for_each = toset(var.regions)
-  location = each.key
-  service  = google_cloud_run_v2_service.services[each.key].name
-  role     = "roles/run.invoker"
-  member   = "allUsers"
+resource "google_cloud_run_service_iam_member" "iap_invoker" {
+  for_each   = var.iap_enabled ? toset(var.regions) : toset([])
+  location   = each.key
+  service    = google_cloud_run_v2_service.services[each.key].name
+  role       = "roles/run.invoker"
+  member     = "serviceAccount:service-${data.google_project.project.number}@gcp-sa-iap.iam.gserviceaccount.com"
+  depends_on = [google_cloud_run_v2_service.services]
+}
 
+locals {
+  # Generate all combinations of regions and invokers
+  iam_combinations = flatten([
+    for region in var.regions : [
+      for invoker in var.invokers : {
+        key     = "${region}-${invoker}"
+        region  = region
+        invoker = invoker
+      }
+    ]
+  ])
+}
+
+resource "google_cloud_run_service_iam_member" "user_invoker" {
+  # Use iam_combinations directly with for_each
+  for_each   = { for combo in local.iam_combinations : combo.key => combo }
+  location   = each.value.region
+  service    = google_cloud_run_v2_service.services[each.value.region].name
+  role       = "roles/run.invoker"
+  member     = each.value.invoker
   depends_on = [google_cloud_run_v2_service.services]
 }
 
@@ -105,7 +137,9 @@ module "gclb" {
       ]
 
       iap_config = {
-        enable = false
+        enable               = var.iap_enabled
+        oauth2_client_id     = var.iap_enabled ? google_iap_client.project_client[0].client_id : null
+        oauth2_client_secret = var.iap_enabled ? google_iap_client.project_client[0].secret : null
       }
     }
   }

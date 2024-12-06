@@ -30,3 +30,15 @@ variable "image_tag" {
   type        = string
   default     = "v1"
 }
+
+variable "iap_enabled" {
+  description = "Enable IAP for the Load Balancer. If enabled, the invokers variable is suggested to be set to the users that are granted IAM access"
+  type        = bool
+  default     = false
+}
+
+variable "invokers" {
+  description = "Set of invokers to allow access to the Cloud Run services, defaults to allUsers but can be set to a list of users or service accounts"
+  type        = set(string)
+  default     = ["allUsers"]
+}
