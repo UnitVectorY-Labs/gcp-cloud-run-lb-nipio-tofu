@@ -1,3 +1,5 @@
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![Concept](https://img.shields.io/badge/Status-Concept-white)](https://guide.unitvectorylabs.com/bestpractices/status/#concept)
+
 # gcp-cloudrun-lb-nipio-tofu
 
 Deploys a global load-balanced Cloud Run service using nip.io for automatic SSL certificates.
