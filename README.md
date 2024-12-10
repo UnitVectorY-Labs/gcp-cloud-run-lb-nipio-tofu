@@ -54,8 +54,8 @@ This module demonstrates the creation of a Global Load Balancer with Cloud Run s
 |------|-------------|------|---------|:--------:|
 | <a name="input_app_name"></a> [app\_name](#input\_app\_name) | Name of the application | `string` | n/a | yes |
 | <a name="input_iap_enabled"></a> [iap\_enabled](#input\_iap\_enabled) | Enable IAP for the Load Balancer. If enabled, the invokers variable is suggested to be set to the users that are granted IAM access | `bool` | `false` | no |
-| <a name="input_image"></a> [image](#input\_image) | Docker image name | `string` | `"unitvectory-labs/hellorest"` | no |
-| <a name="input_image_tag"></a> [image\_tag](#input\_image\_tag) | Docker image tag | `string` | `"v1"` | no |
+| <a name="input_image"></a> [image](#input\_image) | The Docker image name | `string` | `"unitvectory-labs/hellorest"` | no |
+| <a name="input_image_tag"></a> [image\_tag](#input\_image\_tag) | The Docker image tag | `string` | `"v1"` | no |
 | <a name="input_invokers"></a> [invokers](#input\_invokers) | Set of invokers to allow access to the Cloud Run services, defaults to allUsers but can be set to a list of users or service accounts | `set(string)` | <pre>[<br/>  "allUsers"<br/>]</pre> | no |
 | <a name="input_project_id"></a> [project\_id](#input\_project\_id) | The GCP project ID | `string` | n/a | yes |
 | <a name="input_regions"></a> [regions](#input\_regions) | List of regions to deploy resources in | `list(string)` | n/a | yes |
