@@ -20,13 +20,13 @@ variable "root_repository" {
 }
 
 variable "image" {
-  description = "Docker image name"
+  description = "The Docker image name"
   type        = string
   default     = "unitvectory-labs/hellorest"
 }
 
 variable "image_tag" {
-  description = "Docker image tag"
+  description = "The Docker image tag"
   type        = string
   default     = "v1"
 }
