@@ -13,6 +13,7 @@ This module demonstrates the creation of a Global Load Balancer with Cloud Run s
 - Utilizing nip.io to avoid the need for configuring DNS.
 - Ensuring TLS is used to access the service.
 
+
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
