@@ -10,12 +10,6 @@ locals {
   load_balancer_domain = "${var.app_name}-${replace(google_compute_global_address.load_balancer_ip.address, ".", "-")}.nip.io"
 }
 
-resource "google_iap_client" "project_client" {
-  count        = var.iap_enabled ? 1 : 0
-  display_name = var.app_name
-  brand        = "projects/${data.google_project.project.number}/brands/${data.google_project.project.number}"
-}
-
 resource "google_compute_global_address" "load_balancer_ip" {
   name        = "${var.app_name}-ip"
   description = "Static IP address for the load balancer"
@@ -138,8 +132,6 @@ module "gclb" {
 
       iap_config = {
         enable               = var.iap_enabled
-        oauth2_client_id     = var.iap_enabled ? google_iap_client.project_client[0].client_id : null
-        oauth2_client_secret = var.iap_enabled ? google_iap_client.project_client[0].secret : null
       }
     }
   }
