@@ -38,7 +38,7 @@ variable "iap_enabled" {
 }
 
 variable "invokers" {
-  description = "Set of invokers to allow access to the Cloud Run services, defaults to allUsers but can be set to a list of users or service accounts"
+  description = "Set of invokers to allow access to the Cloud Run services; can be set to a list of users or service accounts authorized to access the Cloud Run services"
   type        = set(string)
-  default     = ["allUsers"]
+  default     = []
 }
