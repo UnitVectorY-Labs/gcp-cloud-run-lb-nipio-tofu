@@ -31,7 +31,7 @@ This module demonstrates the creation of a Global Load Balancer with Cloud Run s
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_gclb"></a> [gclb](#module\_gclb) | GoogleCloudPlatform/lb-http/google//modules/serverless_negs | ~> 12.0 |
+| <a name="module_gclb"></a> [gclb](#module\_gclb) | GoogleCloudPlatform/lb-http/google//modules/serverless_negs | ~> 13.0 |
 
 ## Resources
 
